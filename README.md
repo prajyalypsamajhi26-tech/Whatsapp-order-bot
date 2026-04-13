@@ -1,83 +1,127 @@
-# WhatsApp Chatbot with Node.js, Express, and Twilio
+#  WhatsApp Food Ordering Chatbot (Node.js + Express + whatsapp-web.js)
 
-This project is a WhatsApp chatbot built using Node.js, Express, and the Twilio API. The bot handles user interactions, manages sessions, and processes orders.
+A real-time WhatsApp chatbot built using Node.js, Express, and whatsapp-web.js.  
+The bot connects via QR code and simulates a full food ordering system inside WhatsApp with session handling and user personalization.
 
-## Features
-- State-machine-based chatbot with session handling.
-- Menu-driven interaction.
-- Order creation and status tracking.
-- Twilio WhatsApp API integration.
+---
 
-## Prerequisites
-- Node.js installed.
-- Twilio account with WhatsApp Sandbox enabled.
-- Ngrok for exposing localhost.
+##  Features
 
-## Environment Variables
-Create a `.env` file in the root directory with the following:
-```
-TWILIO_ACCOUNT_SID=your_account_sid
-TWILIO_AUTH_TOKEN=your_auth_token
-TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
-PORT=3000
-```
+-  WhatsApp login via QR code
+-  Menu-based food ordering system
+-  Step-by-step conversation flow (state machine)
+-  Automatic user name detection (WhatsApp contact API)
+-  Order confirmation system
+-  Order status tracking
+-  Multi-user session handling (based on phone number)
+-  Clean modular backend structure
+-  Scalable for database / AI / deployment upgrades
 
-## Installation
-1. Clone the repository.
-2. Run `npm install` to install dependencies.
-3. Start the server: `npm run dev`.
-4. Expose the server using Ngrok: `ngrok http 3000`.
-5. Set the webhook URL in Twilio to `https://<ngrok-url>/webhook`.
+---
 
-## Usage
-- Send "Hi" to the WhatsApp number to start.
-- Follow the menu options to place an order.
-- Send "STATUS" to check the latest order status.
+## User Personalization
 
-## Scripts
-- `npm run dev`: Start the development server with Nodemon.
+Bot automatically detects user name:
 
-## Folder Structure
-- `index.js`: Entry point.
-- `config/twilio.js`: Twilio client configuration.
-- `controllers/webhookController.js`: Webhook logic.
-- `services/messageService.js`: Chatbot logic.
-- `services/sessionService.js`: Session management.
-- `services/orderService.js`: Order management.
+- Primary: `msg.getContact()`
+- Fallback: phone number
+
+Example:
+Welcome to SnackStop, Rahul 👋
+
+Fallback:
+Welcome to SnackStop, there 👋
+
+---
+
+## Chat Flow
+
+User: hi  
+Bot: Welcome to SnackStop, Rahul 👋 Reply MENU to see today's items.
+
+User: menu  
+Bot:
+1. Masala Popcorn - ₹49  
+2. Cold Coffee - ₹79  
+3. Veg Sandwich - ₹99  
+4. Brownie - ₹59  
+Reply with item number to order.
+
+User: 2  
+Bot: You selected Cold Coffee ₹79. How many?
+
+User: 2  
+Bot: 2x Cold Coffee = ₹158. Reply YES to confirm or NO to cancel.
+
+User: yes  
+Bot: Order confirmed 🎉 Your Order ID is #1042. Delivery in 30 minutes 🚀
+
+User: status  
+Bot: Order #1042 | Cold Coffee x2 | Status: Preparing 🟡
+
+---
+
+##  Project Structure
+
+src/
+├── client.js              # WhatsApp connection (QR login)
+├── server.js             # Express server (optional)
+├── handlers/
+│     └── messageHandler.js   # Chat logic + state machine
+├── services/
+│     └── sessionService.js   # In-memory session storage
+
+---
+
+## System Flow
+
+User Message → WhatsApp Web → Message Handler → Session Manager → Response → WhatsApp Reply
+
+Each user is tracked using phone number and state is stored in memory.
+
+---
+
+##  Tech Stack
+
+- Node.js
+- Express.js
+- whatsapp-web.js
+- qrcode-terminal
+
+---
+
+##  Installation
+
+git clone https://github.com/your-username/whatsapp-bot.git  
+cd whatsapp-bot  
+npm install  
+
+---
+
+
+## Setup
+
+1. Run project
+2. Scan QR code from terminal using WhatsApp
+3. Start chatting:
+   - hi
+   - menu
+   - order items
+   - status
+
+---
+
+## Future Improvements
+
+- MongoDB / SQLite database integration
+- AI chatbot mode (ChatGPT)
+- Cloud deployment (Render / Railway / VPS)
+- Admin dashboard for orders
+- Payment integration
+- Real delivery system integration
+
+---
 
 ## License
-MIT
 
-# WhatsApp Chatbot Backend
-
-This project is a WhatsApp chatbot backend built using `whatsapp-web.js` and `express`. The bot connects to WhatsApp via QR code and replies to messages.
-
-## Features
-- Connects to WhatsApp via QR code.
-- Replies to messages based on predefined logic.
-- Modular architecture for clean code.
-
-## Prerequisites
-- Node.js installed.
-- WhatsApp account.
-
-## Installation
-1. Clone the repository.
-2. Run `npm install` to install dependencies.
-3. Start the server: `npm run dev`.
-
-## Usage
-1. Scan the QR code displayed in the terminal to connect the bot to WhatsApp.
-2. Send messages to the bot:
-   - Send "hi" → Bot replies "Hello 👋 I am your bot".
-   - Send "help" → Bot replies with available commands.
-   - Any other message → Bot replies "Sorry, I didn’t understand that".
-
-## Folder Structure
-- `src/client.js`: WhatsApp client setup.
-- `src/server.js`: Express server setup.
-- `src/handlers/messageHandler.js`: Message handling logic.
-- `src/routes/webhook.js`: Optional API routes.
-
-## License
 MIT
