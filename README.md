@@ -59,17 +59,7 @@ Bot: Order confirmed 🎉 Your Order ID is #1042. Delivery in 30 minutes 🚀
 User: status  
 Bot: Order #1042 | Cold Coffee x2 | Status: Preparing 🟡
 
----
 
-##  Project Structure
-
-src/
-├── client.js              # WhatsApp connection (QR login)
-├── server.js             # Express server (optional)
-├── handlers/
-│     └── messageHandler.js   # Chat logic + state machine
-├── services/
-│     └── sessionService.js   # In-memory session storage
 
 ---
 
