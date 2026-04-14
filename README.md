@@ -5,113 +5,127 @@ The bot connects via QR code and simulates a full food ordering system inside Wh
 
 ---
 
-##  Features
-
--  WhatsApp login via QR code
--  Menu-based food ordering system
--  Step-by-step conversation flow (state machine)
--  Automatic user name detection (WhatsApp contact API)
--  Order confirmation system
--  Order status tracking
--  Multi-user session handling (based on phone number)
--  Clean modular backend structure
--  Scalable for database / AI / deployment upgrades
-
----
-
-## User Personalization
-
-Bot automatically detects user name:
-
-- Primary: `msg.getContact()`
-- Fallback: phone number
-
-Example:
-Welcome to SnackStop, Rahul 👋
-
-Fallback:
-Welcome to SnackStop, there 👋
-
----
-
-## Chat Flow
-
-User: hi  
-Bot: Welcome to SnackStop, Rahul 👋 Reply MENU to see today's items.
-
-User: menu  
-Bot:
-1. Masala Popcorn - ₹49  
-2. Cold Coffee - ₹79  
-3. Veg Sandwich - ₹99  
-4. Brownie - ₹59  
-Reply with item number to order.
-
-User: 2  
-Bot: You selected Cold Coffee ₹79. How many?
-
-User: 2  
-Bot: 2x Cold Coffee = ₹158. Reply YES to confirm or NO to cancel.
-
-User: yes  
-Bot: Order confirmed 🎉 Your Order ID is #1042. Delivery in 30 minutes 🚀
-
-User: status  
-Bot: Order #1042 | Cold Coffee x2 | Status: Preparing 🟡
-
-
-
----
-
 ## System Flow
 
-User Message → WhatsApp Web → Message Handler → Session Manager → Response → WhatsApp Reply
+User Message  
+→ WhatsApp Web (QR Authentication)  
+→ Message Handler (Business Logic)  
+→ Session Manager (User State Tracking)  
+→ Response Generation  
+→ WhatsApp Reply  
 
-Each user is tracked using phone number and state is stored in memory.
-
----
-
-##  Tech Stack
-
-- Node.js
-- Express.js
-- whatsapp-web.js
-- qrcode-terminal
+Each user session is tracked using their phone number.
 
 ---
 
-##  Installation
+## Project Structure
 
-git clone https://github.com/your-username/whatsapp-bot.git  
-cd whatsapp-bot  
-npm install  
+
+src/
+├── client.js # WhatsApp client setup (QR login)
+├── server.js # Express server setup (optional)
+├── handlers/
+│ └── messageHandler.js # Chatbot logic and flow control
+├── services/
+│ └── sessionService.js # Session and state management
+
 
 ---
 
+## Tech Stack
 
-## Setup
+- Node.js  
+- Express.js  
+- whatsapp-web.js  
+- qrcode-terminal  
 
-1. Run project
-2. Scan QR code from terminal using WhatsApp
-3. Start chatting:
-   - hi
-   - menu
-   - order items
-   - status
+---
+
+## Installation
+
+Clone the repository:
+
+
+git clone https://github.com/your-username/whatsapp-bot.git
+
+cd whatsapp-bot
+
+
+Install dependencies:
+
+
+npm install
+
+
+---
+
+## Running the Project
+
+Start the application:
+
+
+npm run dev
+
+
+OR
+
+
+node src/client.js
+
+
+---
+
+## Setup Instructions
+
+1. Run the project using the above command  
+2. A QR code will appear in the terminal  
+3. Open WhatsApp on your phone  
+4. Go to Linked Devices  
+5. Scan the QR code  
+
+Once connected, the bot is ready to use.
+
+---
+
+## Usage
+
+- Send "hi" to start interaction
+- Send "menu" to view items  
+- Enter item number to select  
+- Enter quantity  
+- Send "yes" to confirm order  
+- Send "status" to check order  
+
+---
+
+## Important Notes
+
+- Only one `client.on('message')` listener should be used  
+- Do not run multiple instances of the bot  
+- Sessions are stored in memory and will reset on server restart  
+- Input is normalized using `.toLowerCase().trim()`  
+
+---
+
+## Limitations
+
+- No database integration (data is not persistent)  
+- No payment gateway  
+- Runs locally only  
+- Limited to predefined menu  
 
 ---
 
 ## Future Improvements
 
-- MongoDB / SQLite database integration
-- AI chatbot mode (ChatGPT)
-- Cloud deployment (Render / Railway / VPS)
-- Admin dashboard for orders
-- Payment integration
-- Real delivery system integration
+- Integrate MongoDB or SQLite for persistent storage  
+- Deploy on cloud platforms (Render, Railway, etc.)  
+- Add AI-based conversational support  
+- Implement payment gateway  
+- Develop admin dashboard for order management  
 
 ---
 
 ## License
 
-MIT
+This project is licensed under the MIT License.
